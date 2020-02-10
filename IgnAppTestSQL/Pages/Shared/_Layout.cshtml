@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using IgnAppTestSQL.Data
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<IgniteUser> UserManager
+@inject SignInManager<IgniteUser> SignInManager
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -28,13 +34,65 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        
+
                         @* Enter Page Login For Users to see home page *@
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            @if (User.IsInRole(Data.Utility.UserRole.AdminUser))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Index">Welcome Admin User</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Index">Admin Report</a>
+                                </li>
+                            }
+                            else if (User.IsInRole(Data.Utility.UserRole.ManagerUser))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Manager/Index">Manager Report</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Account/Logout">Logout</a>
+                                </li>
+                            }
+                            else if (User.IsInRole(Data.Utility.UserRole.HR))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/HR/Index">HR Report</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Account/Logout">Logout</a>
+                                </li>
+                            }
+                            else if (User.IsInRole(Data.Utility.UserRole.RegEmp))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Account/Logout">Logout</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Questions/QualificationPage">Qualification Questions</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Questions/MoreQualPage">Additional Questions</a>
+                                </li>
+                            }
+                        }
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Account/Register">Register</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Account/Login">Login</a>
                         </li>
                     </ul>
                 </div>

@@ -20,11 +20,17 @@ namespace IgnAppTestSQL.Data
         public bool WorkedOverOneYear { get; set; }
         public bool IsQualifiedForLongTermEmp { get; set; }
         public bool CompleteUndergraduate { get; set; }
+        // Remove this field IsApplicationFilled as this will be tracked on IgniteApplication not the User
         public bool IsApplicationFilled { get; set; }
         public bool PreQualificationQuestionFilled { get; set; }
-        public bool HRApproved { get; set; }
+        // Remove HRValued as Application Status Selected Tracks application status of Employees Chosen by HR out of all Endorsed Candidates
+        //public bool HRApproved { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public DateTime HiredDate { get; set; }
+        public DateTime TermDate { get; set; }
+
+        // Marks the date that the Manager marks you as qualified to get an application for qualification
+        public DateTime ApplicationApprovalDate { get; set; }
         //Use this field to determine if user is eligible to receive the application
         public bool EligibleForQualification { get; set; }
 

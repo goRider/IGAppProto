@@ -289,6 +289,7 @@ namespace IgnAppTestSQL.Data
                 e.HasKey(k => k.ApplicationId);
                 e.Property(p => p.ApplicationId).ValueGeneratedOnAdd();
                 e.Property(p => p.FKApplicationStatusId).HasDefaultValueSql("1");
+                e.Property(p => p.IsQualificationQuestionComplete).HasDefaultValueSql("0");
                 e.Property(p => p.UserApplicationCreationDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 e.HasOne(q => q.QuestionToAnswer).WithOne(ua => ua.IgniteUserApplication)

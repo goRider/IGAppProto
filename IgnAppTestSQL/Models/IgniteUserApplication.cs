@@ -13,6 +13,9 @@ namespace IgnAppTestSQL.Models
         public DateTime ManagerApplicationStatusChangeDate { get; set; }
         public DateTime UserApplicationCreationDate { get; set; }
 
+        // Track Full Completion of 4 Questions
+        public bool IsQualificationQuestionComplete { get; set; }
+
         #region Application User Nav
 
         public int? FKApplicationStatusId { get; set; }

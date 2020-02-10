@@ -16,9 +16,9 @@
 
   <ItemGroup>
     <Folder Include="Models\Views\" />
-    <Folder Include="Pages\HR\" />
-    <Folder Include="Pages\Manager\" />
-    <Folder Include="Pages\Admin\" />
+    <Folder Include="Pages\Admin\InputModels\" />
+    <Folder Include="Pages\HR\InputModels\" />
+    <Folder Include="Pages\Manager\InputModels\" />
     <Folder Include="Pages\Reports\" />
   </ItemGroup>
 
