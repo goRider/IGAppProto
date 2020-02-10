@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Models\Views\" />
+    <Folder Include="Pages\HR\" />
+    <Folder Include="Pages\Manager\" />
+    <Folder Include="Pages\Account\" />
+    <Folder Include="Pages\Admin\" />
+    <Folder Include="Pages\Report\" />
+  </ItemGroup>
+
+</Project>
