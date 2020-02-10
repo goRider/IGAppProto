@@ -19,7 +19,6 @@
     <Folder Include="Pages\Admin\InputModels\" />
     <Folder Include="Pages\HR\InputModels\" />
     <Folder Include="Pages\Manager\InputModels\" />
-    <Folder Include="Pages\Reports\" />
   </ItemGroup>
 
 </Project>

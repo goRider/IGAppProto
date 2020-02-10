@@ -37,8 +37,16 @@ namespace IgnAppTestSQL
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddRazorPagesOptions(options =>
+                {
+                    options.Conventions.AllowAnonymousToPage("/Pages/Account/Login");
+                });
 
             services.AddDbContext<IgniteContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TestDev")));
 
@@ -57,6 +65,7 @@ namespace IgnAppTestSQL
             {
                 option.LoginPath = "/Pages/Account/Login";
                 option.LogoutPath = "/Pages/Account/Logout";
+                //option.Cookie.Name = Configuration["CookieName"];
             });
 
             services.Configure<IdentityOptions>(options =>

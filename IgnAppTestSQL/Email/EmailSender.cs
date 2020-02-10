@@ -23,7 +23,7 @@ namespace IgnAppTestSQL.Email
             var client = new SendGridClient(Options.SendGridKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("moco7535@gmail.com", "Test Email"),
+                From = new EmailAddress("okellogeorge40@yahoo.com", "Test Email"),
                 Subject = subject,
                 PlainTextContent = htmlMessage,
                 HtmlContent = htmlMessage

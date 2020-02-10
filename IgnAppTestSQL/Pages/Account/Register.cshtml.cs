@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using IgnAppTestSQL.Data;
 using IgnAppTestSQL.Data.Utility;
 using IgnAppTestSQL.Pages.Account.InputModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.Logging;
 
 namespace IgnAppTestSQL.Pages.Account
 {
+    [AllowAnonymous]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<IgniteUser> _signInManager;
@@ -45,7 +47,7 @@ namespace IgnAppTestSQL.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("css~/");
+            returnUrl = returnUrl ?? Url.Content("~/");
 
             if (ModelState.IsValid)
             {
@@ -66,11 +68,12 @@ namespace IgnAppTestSQL.Pages.Account
                 {
                     user.EmailConfirmed = true;
                 }
+                
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    if (await _roleManager.RoleExistsAsync(UserRole.AdminUser))
+                    if (!await _roleManager.RoleExistsAsync(UserRole.AdminUser))
                     {
                         await _roleManager.CreateAsync(new IgniteRole(UserRole.AdminUser));
                     }
@@ -91,11 +94,16 @@ namespace IgnAppTestSQL.Pages.Account
                     {
                         await _userManager.AddToRoleAsync(user, UserRole.AdminUser);
                     }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, UserRole.RegEmp);
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        return LocalRedirect(returnUrl);
+                    }
 
                     await _userManager.AddToRoleAsync(user, UserRole.AdminUser);
-                    // _logger.LogInformation("User created a new");
 
-                    _logger.LogInformation("User createed a new account with password");
+                    _logger.LogInformation("User created a new account with password");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page("/Confirm/ConfirmEmail",
@@ -105,7 +113,7 @@ namespace IgnAppTestSQL.Pages.Account
 
                     await _emailSender.SendEmailAsync(Input.Email, "Please confirm email", $"Please confirm your account by <a href='{ HtmlEncoder.Default.Encode(callbackUrl) }'>Click Here</a>.");
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    
 
                     //_context.IgniteUserApplications.Add();
 
