@@ -41,11 +41,55 @@ namespace IgnAppTestSQL.Data
 
                 // Set Default
                 e.Property(p => p.FKDepartmentId).HasDefaultValueSql("2");
-                e.Property(p => p.FKTitleId).HasDefaultValueSql("0");
+                e.Property(p => p.FKTitleId).HasDefaultValueSql("14");
                 e.Property(p => p.FKLocationId).HasDefaultValueSql("0");
                 e.Property(p => p.FKBUID).HasDefaultValueSql("1");
+
+                e.Property(p => p.EligibleForQualification).HasDefaultValueSql("0");
+
+                e.HasOne(d => d.Department).WithMany(iu => iu.IgniteUsers).HasForeignKey(f => f.FKDepartmentId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                
+                e.HasOne(l => l.UserLocation).WithMany(iu => iu.IgniteUsers).HasForeignKey(f => f.FKLocationId);
             });
 
+            #endregion
+
+            #region BusinessUnit
+
+            builder.Entity<BusinessUnit>(e =>
+            {
+                e.HasKey(k => k.BUID);
+                e.Property(p => p.BUID).ValueGeneratedNever();
+
+                e.HasMany(iu => iu.IgniteUsers).WithOne(bu => bu.BU).HasForeignKey(fk => fk.FKBUID);
+
+                #region Business Unit Seed Data
+
+                e.HasData(
+                    new BusinessUnit
+                    {
+                        BUID = 1,
+                        BusinessUnitName = "Corporate"
+                    },
+                    new BusinessUnit
+                    {
+                        BUID = 2,
+                        BusinessUnitName = "MGE"
+                    },
+                    new BusinessUnit
+                    {
+                        BUID = 3,
+                        BusinessUnitName = "MM/Auto"
+                    },
+                    new BusinessUnit
+                    {
+                        BUID = 4,
+                        BusinessUnitName = "CX"
+                    });
+
+                #endregion
+            });
             #endregion
 
             #region Department
@@ -54,8 +98,6 @@ namespace IgnAppTestSQL.Data
             {
                 e.HasKey(k => k.DepartmentId);
                 e.Property(p => p.DepartmentId).ValueGeneratedNever();
-
-                e.HasMany(iu => iu.IgniteUsers).WithOne(d => d.Department).HasForeignKey(f => f.FKDepartmentId);
 
                 #region Department Seed Data
                 //add Department Values
@@ -125,25 +167,29 @@ namespace IgnAppTestSQL.Data
                     {
                         LocationId = 1,
                         CityLocation = "Fenton",
-                        StateLocation = "MO"
+                        StateLocation = "MO",
+                        CountryLocation = "United States"
                     },
                     new Location
                     {
                         LocationId = 2,
                         CityLocation = "Maumee",
-                        StateLocation = "OH"
+                        StateLocation = "OH",
+                        CountryLocation = "United States"
                     },
                     new Location
                     {
                         LocationId = 3,
                         CityLocation = "Twinsburg",
-                        StateLocation = "OH"
+                        StateLocation = "OH",
+                        CountryLocation = "United States"
                     },
                     new Location
                     {
                         LocationId = 4,
                         CityLocation = "Lehi",
-                        StateLocation = "UT"
+                        StateLocation = "UT",
+                        CountryLocation = "United States"
                     });
                 #endregion
             });
@@ -160,11 +206,6 @@ namespace IgnAppTestSQL.Data
                 #region Title Seed Data
 
                 e.HasData(
-                    new Title
-                    {
-                        TitleId = 0,
-                        TitleName = "N/A"
-                    },
                     new Title
                     {
                         TitleId = 1,
@@ -229,8 +270,101 @@ namespace IgnAppTestSQL.Data
                     {
                         TitleId = 13,
                         TitleName = "Network Engineer (Sr)"
+                    },
+                    new Title
+                    {
+                        TitleId = 14,
+                        TitleName = "N/A"
                     });
 
+                #endregion
+            });
+
+            #endregion
+
+            #region Ignite User Application
+
+            builder.Entity<IgniteUserApplication>(e =>
+            {
+                e.HasKey(k => k.ApplicationId);
+                e.Property(p => p.ApplicationId).ValueGeneratedOnAdd();
+                e.Property(p => p.FKApplicationStatusId).HasDefaultValueSql("1");
+                e.Property(p => p.UserApplicationCreationDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                e.HasOne(q => q.QuestionToAnswer).WithOne(ua => ua.IgniteUserApplication)
+                    .HasForeignKey<IgniteUserApplication>(f => f.FkQuestionToAnswerId).OnDelete(DeleteBehavior.Cascade);
+
+                e.HasOne(iu => iu.IgniteUser).WithMany(ua => ua.IgniteUserApplications)
+                    .HasForeignKey(f => f.FkIgniteUserId).OnDelete(DeleteBehavior.Cascade);
+            });
+
+            #endregion
+
+            #region Question and Answer
+
+            builder.Entity<QuestionToAnswer>(e =>
+            {
+                e.HasKey(k => k.QuestionAnswerId);
+                e.Property(p => p.QuestionAnswerId).ValueGeneratedOnAdd();
+            });
+
+            #endregion
+
+            #region Application Status
+
+            builder.Entity<ApplicationStatus>(e =>
+            {
+                e.HasKey(k => k.StatusId);
+                e.Property(p => p.StatusId).ValueGeneratedNever();
+
+                #region Application Status Seed Data
+
+                e.HasData(
+                    new ApplicationStatus
+                    {
+                        StatusId = 1,
+                        StatusName = Models.Utility.IgniteApplicationStatus.NoApplication,
+                    },
+                    new ApplicationStatus
+                    {
+                        StatusId = 2,
+                        StatusName = Models.Utility.IgniteApplicationStatus.NotStarted,
+                    },
+                    new ApplicationStatus
+                    {
+                        StatusId = 3,
+                        StatusName = Models.Utility.IgniteApplicationStatus.IncompletePreQual,
+                    },
+                    new ApplicationStatus
+                    {
+                        StatusId = 4,
+                        StatusName = Models.Utility.IgniteApplicationStatus.CompletePreQual,
+                    },
+                    new ApplicationStatus
+                    {
+                        StatusId = 5,
+                        StatusName = Models.Utility.IgniteApplicationStatus.IncompleteQual,
+                    },
+                    new ApplicationStatus
+                    {
+                        StatusId = 6,
+                        StatusName = Models.Utility.IgniteApplicationStatus.CompleteQual,
+                    },
+                    new ApplicationStatus
+                    {
+                        StatusId = 7,
+                        StatusName = Models.Utility.IgniteApplicationStatus.Endorsed,
+                    },
+                    new ApplicationStatus
+                    {
+                        StatusId = 8,
+                        StatusName = Models.Utility.IgniteApplicationStatus.Hold,
+                    },
+                    new ApplicationStatus
+                    {
+                        StatusId = 9,
+                        StatusName = Models.Utility.IgniteApplicationStatus.SelectedUser,
+                    });
                 #endregion
             });
 

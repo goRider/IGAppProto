@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IgnAppTestSQL.Data;
+using IgnAppTestSQL.Email;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -39,7 +40,7 @@ namespace IgnAppTestSQL
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddDbContext<IgniteContext>(options => options.UseSqlServer(Configuration.GetConnectionString("RandomDev")));
+            services.AddDbContext<IgniteContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TestDev")));
 
             services.AddIdentity<IgniteUser, IgniteRole>(options =>
                 {

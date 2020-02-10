@@ -20,7 +20,6 @@ namespace IgnAppTestSQL.Models
         #region Navigation
 
         public IgniteUserApplication IgniteUserApplication { get; set; }
-        public int? FkIgniteUserApplicationId { get; set; }
 
         #endregion
     }

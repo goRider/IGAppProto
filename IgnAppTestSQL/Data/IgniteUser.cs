@@ -24,9 +24,12 @@ namespace IgnAppTestSQL.Data
         public bool PreQualificationQuestionFilled { get; set; }
         public bool HRApproved { get; set; }
 
+        public DateTime StartDate { get; set; }
+        //Use this field to determine if user is eligible to receive the application
+        public bool EligibleForQualification { get; set; }
+
         // NAV
-        public ICollection<IgniteUserToIgniteUserApplication> IgniteUserIgniteUserApplications { get; set; }
-        public int? FKIgniteUserApplicationId { get; set; }
+        public ICollection<IgniteUserApplication> IgniteUserApplications { get; set; }
         public Department Department { get; set; }
         public ICollection<Department> Departments { get; set; }
         public int? FKDepartmentId { get; set; }

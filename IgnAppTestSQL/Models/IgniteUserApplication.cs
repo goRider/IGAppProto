@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IgnAppTestSQL.Data;
 
 namespace IgnAppTestSQL.Models
 {
     public class IgniteUserApplication
     {
         public int ApplicationId { get; set; }
-        public string IgniteApplicationStatus { get; set; }
         public DateTime ApplicationCompletionDate { get; set; }
         public DateTime ManagerApplicationStatusChangeDate { get; set; }
         public DateTime UserApplicationCreationDate { get; set; }
@@ -20,6 +20,10 @@ namespace IgnAppTestSQL.Models
 
         public QuestionToAnswer QuestionToAnswer { get; set; }
         public int FkQuestionToAnswerId { get; set; }
+
+        public IgniteUser IgniteUser { get; set; }
+        public int? FkIgniteUserId { get; set; }
+
 
         #endregion
     }
